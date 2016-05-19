@@ -1,3 +1,10 @@
+Author: Trond Hindenes
+Original repo: https://github.com/trondhindenes/AnsibleDscModuleGenerator
+
+This is just here because it's easier for me to work with and also updated it to work with ansible 2.1.0
+
+
+
 # AnsibleDscModuleGenerator
 A Powershell module for generating Ansible modules from PowerShell DSC resources
 
