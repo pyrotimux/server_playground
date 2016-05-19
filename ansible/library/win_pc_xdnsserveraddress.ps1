@@ -26,20 +26,33 @@ Set-Attr $result "changed" $false
 
 
 
-#ATTRIBUTE:EnterpriseAdministratorCredential_username;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$EnterpriseAdministratorCredential_username = Get-Attr -obj $params -name EnterpriseAdministratorCredential_username -failifempty $True -resultobj $result
-#ATTRIBUTE:EnterpriseAdministratorCredential_password;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$EnterpriseAdministratorCredential_password = Get-Attr -obj $params -name EnterpriseAdministratorCredential_password -failifempty $True -resultobj $result
-#ATTRIBUTE:ForestFQDN;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$ForestFQDN = Get-Attr -obj $params -name ForestFQDN -failifempty $True -resultobj $result
+#ATTRIBUTE:Address;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$Address = Get-Attr -obj $params -name Address -failifempty $True -resultobj $result
+#ATTRIBUTE:AddressFamily;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:IPv4,IPv6
+$AddressFamily = Get-Attr -obj $params -name AddressFamily -failifempty $True -resultobj $result
+#ATTRIBUTE:InterfaceAlias;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$InterfaceAlias = Get-Attr -obj $params -name InterfaceAlias -failifempty $True -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_username = Get-Attr -obj $params -name PsDscRunAsCredential_username -failifempty $False -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_password = Get-Attr -obj $params -name PsDscRunAsCredential_password -failifempty $False -resultobj $result
+#ATTRIBUTE:Validate;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$Validate = Get-Attr -obj $params -name Validate -failifempty $False -resultobj $result
 #ATTRIBUTE:AutoInstallModule;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, the required dsc resource/module will be auto-installed using the Powershell package manager;CHOICES:true,false
 $AutoInstallModule = Get-Attr -obj $params -name AutoInstallModule -failifempty $False -resultobj $result -default false
 #ATTRIBUTE:AutoConfigureLcm;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, LCM will be auto-configured for directly invoking DSC resources (which is a one-time requirement for Ansible DSC modules);CHOICES:true,false
 $AutoConfigureLcm = Get-Attr -obj $params -name AutoConfigureLcm -failifempty $False -resultobj $result -default false
+If ($AddressFamily)
+{
+    If (('IPv4','IPv6') -contains $AddressFamily ) {
+    }
+    Else
+    {
+        Fail-Json $result "Option AddressFamily has invalid value $AddressFamily. Valid values are 'IPv4','IPv6'"
+    }
+}
+
+
 If ($AutoInstallModule)
 {
     If (('true','false') -contains $AutoInstallModule ) {
@@ -62,19 +75,13 @@ If ($AutoConfigureLcm)
 }
 
 
-if ($EnterpriseAdministratorCredential_username)
-{
-$EnterpriseAdministratorCredential_securepassword = $EnterpriseAdministratorCredential_password | ConvertTo-SecureString -asPlainText -Force
-$EnterpriseAdministratorCredential = New-Object System.Management.Automation.PSCredential($EnterpriseAdministratorCredential_username,$EnterpriseAdministratorCredential_securepassword)
-}
-
 if ($PsDscRunAsCredential_username)
 {
 $PsDscRunAsCredential_securepassword = $PsDscRunAsCredential_password | ConvertTo-SecureString -asPlainText -Force
 $PsDscRunAsCredential = New-Object System.Management.Automation.PSCredential($PsDscRunAsCredential_username,$PsDscRunAsCredential_securepassword)
 }
 
-$DscResourceName = "xADRecycleBin"
+$DscResourceName = "xDnsServerAddress"
 
 #This code comes from powershell2_dscresourceverify.ps1 in the DSC-->Ansible codegen tool
 

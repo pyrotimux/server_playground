@@ -1,0 +1,47 @@
+---
+- hosts: ps_ad
+  vars:
+    ps_domainname: "pyro.testrealm.local"
+    ps_compname: "pyrojr"
+    ps_domainadmin_user: "pyro\\admin"
+    ps_domainadmin_pass: "V@gran7"
+    ps_dns_addr: "10.255.10.20"
+    ps_iface_name: "Ethernet"
+  gather_facts: false
+  tasks:
+  - name: Make sure the LCM refresh mode is disabled
+    win_lcm5:
+      refresh_mode: "Disabled"
+    tags:
+      - Config
+  - name: Download xNetworking
+    win_oneget:
+            name: "xNetworking"
+    tags:
+      - Oneget
+  - name: Download xComputerManagement
+    win_oneget:
+            name: "xComputerManagement"
+    tags:
+      - Oneget
+  - name: Change DNS Address
+    win_pc_xdnsserveraddress:
+      Address: "{{ ps_dns_addr }}"
+      InterfaceAlias: "{{ ps_iface_name }}"
+      AddressFamily: "IPv4"    
+  - name: Rename and Join Domain
+    win_pc_xcomputer:
+      Name: "{{ ps_compname }}"
+      DomainName: "{{ ps_domainname }}"
+      Credential_username: "{{ ps_domainadmin_user }}"
+      Credential_password: "{{ ps_domainadmin_pass }}"
+    tags:
+      - CompInit
+    notify:
+      - Reboot Server
+  - meta: flush_handlers
+  handlers:
+  - name: Reboot Server
+    win_reboot:
+      shutdown_timeout_sec: 600
+      reboot_timeout_sec: 600

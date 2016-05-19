@@ -54,7 +54,7 @@ If ($TrustDirection)
     }
     Else
     {
-        # Fail-Json $result "Option TrustDirection has invalid value $TrustDirection. Valid values are 'Bidirectional','Inbound','Outbound'"
+        Fail-Json $result "Option TrustDirection has invalid value $TrustDirection. Valid values are 'Bidirectional','Inbound','Outbound'"
     }
 }
 
@@ -65,7 +65,7 @@ If ($TrustType)
     }
     Else
     {
-        # Fail-Json $result "Option TrustType has invalid value $TrustType. Valid values are 'External','Forest'"
+        Fail-Json $result "Option TrustType has invalid value $TrustType. Valid values are 'External','Forest'"
     }
 }
 
@@ -76,7 +76,7 @@ If ($Ensure)
     }
     Else
     {
-        # Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
+        Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
     }
 }
 
@@ -87,7 +87,7 @@ If ($AutoInstallModule)
     }
     Else
     {
-        # Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
     }
 }
 
@@ -98,7 +98,7 @@ If ($AutoConfigureLcm)
     }
     Else
     {
-        # Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
     }
 }
 

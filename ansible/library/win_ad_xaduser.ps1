@@ -132,7 +132,7 @@ If ($Ensure)
     }
     Else
     {
-        # Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
+        Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
     }
 }
 
@@ -143,7 +143,7 @@ If ($AutoInstallModule)
     }
     Else
     {
-        # Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
     }
 }
 
@@ -154,7 +154,7 @@ If ($AutoConfigureLcm)
     }
     Else
     {
-        # Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
     }
 }
 

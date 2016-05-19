@@ -72,7 +72,7 @@ If ($Category)
     }
     Else
     {
-        # Fail-Json $result "Option Category has invalid value $Category. Valid values are 'Distribution','Security'"
+        Fail-Json $result "Option Category has invalid value $Category. Valid values are 'Distribution','Security'"
     }
 }
 
@@ -83,7 +83,7 @@ If ($Ensure)
     }
     Else
     {
-        # Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
+        Fail-Json $result "Option Ensure has invalid value $Ensure. Valid values are 'Absent','Present'"
     }
 }
 
@@ -94,7 +94,7 @@ If ($GroupScope)
     }
     Else
     {
-        # Fail-Json $result "Option GroupScope has invalid value $GroupScope. Valid values are 'DomainLocal','Global','Universal'"
+        Fail-Json $result "Option GroupScope has invalid value $GroupScope. Valid values are 'DomainLocal','Global','Universal'"
     }
 }
 
@@ -105,7 +105,7 @@ If ($MembershipAttribute)
     }
     Else
     {
-        # Fail-Json $result "Option MembershipAttribute has invalid value $MembershipAttribute. Valid values are 'DistinguishedName','ObjectGUID','SamAccountName','SID'"
+        Fail-Json $result "Option MembershipAttribute has invalid value $MembershipAttribute. Valid values are 'DistinguishedName','ObjectGUID','SamAccountName','SID'"
     }
 }
 
@@ -116,7 +116,7 @@ If ($AutoInstallModule)
     }
     Else
     {
-        # Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
     }
 }
 
@@ -127,7 +127,7 @@ If ($AutoConfigureLcm)
     }
     Else
     {
-        # Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
     }
 }
 

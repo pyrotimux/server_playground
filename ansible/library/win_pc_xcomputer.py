@@ -24,27 +24,41 @@
 
 DOCUMENTATION = '''
 ---
-module: win_ad_xwaitfordomain
+module: win_pc_xcomputer
 version_added: 
 short_description: 
 description:
      - 
 options:
-  DomainName:
+  Name:
     description:
       - 
     required: True
     default: 
     aliases: []
 
-  DomainUserCredential_username:
+  Credential_username:
     description:
       - 
     required: False
     default: 
     aliases: []
 
-  DomainUserCredential_password:
+  Credential_password:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  DomainName:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  JoinOU:
     description:
       - 
     required: False
@@ -65,21 +79,21 @@ options:
     default: 
     aliases: []
 
-  RebootRetryCount:
+  UnjoinCredential_username:
     description:
       - 
     required: False
     default: 
     aliases: []
 
-  RetryCount:
+  UnjoinCredential_password:
     description:
       - 
     required: False
     default: 
     aliases: []
 
-  RetryIntervalSec:
+  WorkGroupName:
     description:
       - 
     required: False

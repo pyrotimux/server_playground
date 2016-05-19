@@ -28,14 +28,16 @@ Set-Attr $result "changed" $false
 
 #ATTRIBUTE:DomainName;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $DomainName = Get-Attr -obj $params -name DomainName -failifempty $True -resultobj $result
-#ATTRIBUTE:DomainUserCredential_username;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$DomainUserCredential_username = Get-Attr -obj $params -name DomainUserCredential_username -failifempty $True -resultobj $result
-#ATTRIBUTE:DomainUserCredential_password;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$DomainUserCredential_password = Get-Attr -obj $params -name DomainUserCredential_password -failifempty $True -resultobj $result
+#ATTRIBUTE:DomainUserCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$DomainUserCredential_username = Get-Attr -obj $params -name DomainUserCredential_username -failifempty $False -resultobj $result
+#ATTRIBUTE:DomainUserCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$DomainUserCredential_password = Get-Attr -obj $params -name DomainUserCredential_password -failifempty $False -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_username = Get-Attr -obj $params -name PsDscRunAsCredential_username -failifempty $False -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_password = Get-Attr -obj $params -name PsDscRunAsCredential_password -failifempty $False -resultobj $result
+#ATTRIBUTE:RebootRetryCount;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$RebootRetryCount = Get-Attr -obj $params -name RebootRetryCount -failifempty $False -resultobj $result
 #ATTRIBUTE:RetryCount;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $RetryCount = Get-Attr -obj $params -name RetryCount -failifempty $False -resultobj $result
 #ATTRIBUTE:RetryIntervalSec;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
@@ -50,7 +52,7 @@ If ($AutoInstallModule)
     }
     Else
     {
-        # Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
     }
 }
 
@@ -61,7 +63,7 @@ If ($AutoConfigureLcm)
     }
     Else
     {
-        # Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
     }
 }
 

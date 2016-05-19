@@ -64,7 +64,7 @@ If ($AutoInstallModule)
     }
     Else
     {
-        # Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoInstallModule has invalid value $AutoInstallModule. Valid values are 'true','false'"
     }
 }
 
@@ -75,7 +75,7 @@ If ($AutoConfigureLcm)
     }
     Else
     {
-        # Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
+        Fail-Json $result "Option AutoConfigureLcm has invalid value $AutoConfigureLcm. Valid values are 'true','false'"
     }
 }
 

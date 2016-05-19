@@ -26,16 +26,26 @@ Set-Attr $result "changed" $false
 
 
 
-#ATTRIBUTE:EnterpriseAdministratorCredential_username;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$EnterpriseAdministratorCredential_username = Get-Attr -obj $params -name EnterpriseAdministratorCredential_username -failifempty $True -resultobj $result
-#ATTRIBUTE:EnterpriseAdministratorCredential_password;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$EnterpriseAdministratorCredential_password = Get-Attr -obj $params -name EnterpriseAdministratorCredential_password -failifempty $True -resultobj $result
-#ATTRIBUTE:ForestFQDN;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$ForestFQDN = Get-Attr -obj $params -name ForestFQDN -failifempty $True -resultobj $result
+#ATTRIBUTE:Name;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$Name = Get-Attr -obj $params -name Name -failifempty $True -resultobj $result
+#ATTRIBUTE:Credential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$Credential_username = Get-Attr -obj $params -name Credential_username -failifempty $False -resultobj $result
+#ATTRIBUTE:Credential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$Credential_password = Get-Attr -obj $params -name Credential_password -failifempty $False -resultobj $result
+#ATTRIBUTE:DomainName;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$DomainName = Get-Attr -obj $params -name DomainName -failifempty $False -resultobj $result
+#ATTRIBUTE:JoinOU;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$JoinOU = Get-Attr -obj $params -name JoinOU -failifempty $False -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_username = Get-Attr -obj $params -name PsDscRunAsCredential_username -failifempty $False -resultobj $result
 #ATTRIBUTE:PsDscRunAsCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
 $PsDscRunAsCredential_password = Get-Attr -obj $params -name PsDscRunAsCredential_password -failifempty $False -resultobj $result
+#ATTRIBUTE:UnjoinCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$UnjoinCredential_username = Get-Attr -obj $params -name UnjoinCredential_username -failifempty $False -resultobj $result
+#ATTRIBUTE:UnjoinCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$UnjoinCredential_password = Get-Attr -obj $params -name UnjoinCredential_password -failifempty $False -resultobj $result
+#ATTRIBUTE:WorkGroupName;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
+$WorkGroupName = Get-Attr -obj $params -name WorkGroupName -failifempty $False -resultobj $result
 #ATTRIBUTE:AutoInstallModule;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, the required dsc resource/module will be auto-installed using the Powershell package manager;CHOICES:true,false
 $AutoInstallModule = Get-Attr -obj $params -name AutoInstallModule -failifempty $False -resultobj $result -default false
 #ATTRIBUTE:AutoConfigureLcm;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, LCM will be auto-configured for directly invoking DSC resources (which is a one-time requirement for Ansible DSC modules);CHOICES:true,false
@@ -62,10 +72,10 @@ If ($AutoConfigureLcm)
 }
 
 
-if ($EnterpriseAdministratorCredential_username)
+if ($Credential_username)
 {
-$EnterpriseAdministratorCredential_securepassword = $EnterpriseAdministratorCredential_password | ConvertTo-SecureString -asPlainText -Force
-$EnterpriseAdministratorCredential = New-Object System.Management.Automation.PSCredential($EnterpriseAdministratorCredential_username,$EnterpriseAdministratorCredential_securepassword)
+$Credential_securepassword = $Credential_password | ConvertTo-SecureString -asPlainText -Force
+$Credential = New-Object System.Management.Automation.PSCredential($Credential_username,$Credential_securepassword)
 }
 
 if ($PsDscRunAsCredential_username)
@@ -74,7 +84,13 @@ $PsDscRunAsCredential_securepassword = $PsDscRunAsCredential_password | ConvertT
 $PsDscRunAsCredential = New-Object System.Management.Automation.PSCredential($PsDscRunAsCredential_username,$PsDscRunAsCredential_securepassword)
 }
 
-$DscResourceName = "xADRecycleBin"
+if ($UnjoinCredential_username)
+{
+$UnjoinCredential_securepassword = $UnjoinCredential_password | ConvertTo-SecureString -asPlainText -Force
+$UnjoinCredential = New-Object System.Management.Automation.PSCredential($UnjoinCredential_username,$UnjoinCredential_securepassword)
+}
+
+$DscResourceName = "xComputer"
 
 #This code comes from powershell2_dscresourceverify.ps1 in the DSC-->Ansible codegen tool
 

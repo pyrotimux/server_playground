@@ -24,30 +24,30 @@
 
 DOCUMENTATION = '''
 ---
-module: win_ad_xwaitfordomain
+module: win_pc_xdnsserveraddress
 version_added: 
 short_description: 
 description:
      - 
 options:
-  DomainName:
+  Address:
     description:
       - 
     required: True
     default: 
     aliases: []
 
-  DomainUserCredential_username:
+  AddressFamily:
     description:
       - 
-    required: False
+    required: True
     default: 
     aliases: []
-
-  DomainUserCredential_password:
+    choices:      - IPv4      - IPv6
+  InterfaceAlias:
     description:
       - 
-    required: False
+    required: True
     default: 
     aliases: []
 
@@ -65,21 +65,7 @@ options:
     default: 
     aliases: []
 
-  RebootRetryCount:
-    description:
-      - 
-    required: False
-    default: 
-    aliases: []
-
-  RetryCount:
-    description:
-      - 
-    required: False
-    default: 
-    aliases: []
-
-  RetryIntervalSec:
+  Validate:
     description:
       - 
     required: False

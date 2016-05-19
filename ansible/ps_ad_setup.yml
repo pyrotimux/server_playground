@@ -3,20 +3,16 @@
   vars:
     ps_domainname: "pyro.testrealm.local"
     ps_domainnetbios: "pyro"
-    ps_domainadmin_user: "vagrant"
+    ps_domainadmin_user: "admin"
     ps_domainadmin_pass: "V@gran7"
-    ps_safemodeadmin_user: "vagrant"
+    ps_safemodeadmin_user: "safeadmin"
     ps_safemodeadmin_pass: "V@gran7"
     ps_users:
       - { name: 'ichiban', pass: 'ichiV@gran7' }
       - { name: 'niban', pass: 'niV@gran7' }
       - { name: 'sanban', pass: 'sanV@gran7'}
-  gather_facts: true
+  gather_facts: false
   tasks:
-  - name: Upgrade Powershell
-    win_chocolatey:
-      name: powershell
-      state: present
   - name: Make sure the LCM refresh mode is disabled
     win_lcm5:
       refresh_mode: "Disabled"
@@ -44,11 +40,10 @@
       - DomainInit
     notify:
       - Reboot Server
+  - meta: flush_handlers
   - name: Add Users
     win_ad_xaduser:
       DomainName: "{{ ps_domainname }}"
-      DomainAdministratorCredential_username: "{{ ps_domainadmin_user }}"
-      DomainAdministratorCredential_password: "{{ ps_domainadmin_pass }}"
       UserName: "{{ item.name }}"
       Password_username: "{{ item.name }}"
       Password_password: "{{ item.pass }}"
