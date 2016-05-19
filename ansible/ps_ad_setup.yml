@@ -1,0 +1,63 @@
+---
+- hosts: ps_main
+  vars:
+    ps_domainname: "pyro.testrealm.local"
+    ps_domainnetbios: "pyro"
+    ps_domainadmin_user: "vagrant"
+    ps_domainadmin_pass: "V@gran7"
+    ps_safemodeadmin_user: "vagrant"
+    ps_safemodeadmin_pass: "V@gran7"
+    ps_users:
+      - { name: 'ichiban', pass: 'ichiV@gran7' }
+      - { name: 'niban', pass: 'niV@gran7' }
+      - { name: 'sanban', pass: 'sanV@gran7'}
+  gather_facts: true
+  tasks:
+  - name: Upgrade Powershell
+    win_chocolatey:
+      name: powershell
+      state: present
+  - name: Make sure the LCM refresh mode is disabled
+    win_lcm5:
+      refresh_mode: "Disabled"
+    tags:
+      - Config
+  - name: Download required Packages
+    win_oneget:
+      name: "xActiveDirectory"
+    tags:
+      - Oneget
+  - name: Install ADDS and RSAT
+    win_feature: 
+      name: "AD-Domain-Services,RSAT-AD-Tools"
+    tags:
+      - WindowsFeature
+  - name: Init Domain
+    win_ad_xaddomain:
+      DomainName: "{{ ps_domainname }}"
+      DomainNetbiosName: "{{ ps_domainnetbios }}"
+      DomainAdministratorCredential_username: "{{ ps_domainadmin_user }}"
+      DomainAdministratorCredential_password: "{{ ps_domainadmin_pass }}"
+      SafemodeAdministratorPassword_username: "{{ ps_safemodeadmin_user }}"
+      SafemodeAdministratorPassword_password: "{{ ps_safemodeadmin_pass }}"
+    tags:
+      - DomainInit
+    notify:
+      - Reboot Server
+  - name: Add Users
+    win_ad_xaduser:
+      DomainName: "{{ ps_domainname }}"
+      DomainAdministratorCredential_username: "{{ ps_domainadmin_user }}"
+      DomainAdministratorCredential_password: "{{ ps_domainadmin_pass }}"
+      UserName: "{{ item.name }}"
+      Password_username: "{{ item.name }}"
+      Password_password: "{{ item.pass }}"
+    with_items: "{{ ps_users }}"
+    tags:
+      - AddUsers
+  handlers:
+  - name: Reboot Server
+    win_reboot:
+      shutdown_timeout_sec: 600
+      reboot_timeout_sec: 600
+
