@@ -1,0 +1,19 @@
+---
+  - hosts: ps_ad
+    tasks:
+    - name: Install 7-zips
+      win_chocolatey: 
+        name: "7zip"
+        state: present
+    - name: Install Google Chrome
+      win_chocolatey:
+        name: "googlechrome"
+        state: present
+    - name: Install Cute PDF
+      win_chocolatey:
+        name: "cutepdf"
+        state: present
+    - name: Install Winscp 
+      win_chocolatey:
+        name: "winscp"
+        state: present
