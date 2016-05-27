@@ -3,14 +3,15 @@
   vars:
     ps_domainname: "pyro.testrealm.local"
     ps_domainnetbios: "pyro"
-    ps_domainadmin_user: "admin"
+    ps_domainadmin_user: "phyo"
     ps_domainadmin_pass: "V@gran7"
-    ps_safemodeadmin_user: "safeadmin"
+    ps_safemodeadmin_user: "safephyo"
     ps_safemodeadmin_pass: "V@gran7"
     ps_users:
       - { name: 'ichiban', pass: 'ichiV@gran7' }
       - { name: 'niban', pass: 'niV@gran7' }
       - { name: 'sanban', pass: 'sanV@gran7'}
+      - { name: 'yonban', pass: 'yonV@gran7'}
   gather_facts: false
   tasks:
   - name: Make sure the LCM refresh mode is disabled
@@ -50,9 +51,14 @@
     with_items: "{{ ps_users }}"
     tags:
       - AddUsers
+  - name: Promote Users
+    win_ad_xadgroup:
+      GroupName: "Domain Admins"
+      MembersToInclude: "ichiban, niban, sanban"
+    tags:
+      - PromoteUsers
   handlers:
   - name: Reboot Server
     win_reboot:
       shutdown_timeout_sec: 600
       reboot_timeout_sec: 600
-

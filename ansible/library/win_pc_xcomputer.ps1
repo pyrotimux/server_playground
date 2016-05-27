@@ -20,32 +20,12 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
-$params = Parse-Args $args
+$params = Parse-Args $args -supports_check_mode $true
 $result = New-Object psobject
 Set-Attr $result "changed" $false
 
 
 
-#ATTRIBUTE:Name;MANDATORY:True;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$Name = Get-Attr -obj $params -name Name -failifempty $True -resultobj $result
-#ATTRIBUTE:Credential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$Credential_username = Get-Attr -obj $params -name Credential_username -failifempty $False -resultobj $result
-#ATTRIBUTE:Credential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$Credential_password = Get-Attr -obj $params -name Credential_password -failifempty $False -resultobj $result
-#ATTRIBUTE:DomainName;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$DomainName = Get-Attr -obj $params -name DomainName -failifempty $False -resultobj $result
-#ATTRIBUTE:JoinOU;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$JoinOU = Get-Attr -obj $params -name JoinOU -failifempty $False -resultobj $result
-#ATTRIBUTE:PsDscRunAsCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$PsDscRunAsCredential_username = Get-Attr -obj $params -name PsDscRunAsCredential_username -failifempty $False -resultobj $result
-#ATTRIBUTE:PsDscRunAsCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$PsDscRunAsCredential_password = Get-Attr -obj $params -name PsDscRunAsCredential_password -failifempty $False -resultobj $result
-#ATTRIBUTE:UnjoinCredential_username;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$UnjoinCredential_username = Get-Attr -obj $params -name UnjoinCredential_username -failifempty $False -resultobj $result
-#ATTRIBUTE:UnjoinCredential_password;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$UnjoinCredential_password = Get-Attr -obj $params -name UnjoinCredential_password -failifempty $False -resultobj $result
-#ATTRIBUTE:WorkGroupName;MANDATORY:False;DEFAULTVALUE:;DESCRIPTION:;CHOICES:
-$WorkGroupName = Get-Attr -obj $params -name WorkGroupName -failifempty $False -resultobj $result
 #ATTRIBUTE:AutoInstallModule;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, the required dsc resource/module will be auto-installed using the Powershell package manager;CHOICES:true,false
 $AutoInstallModule = Get-Attr -obj $params -name AutoInstallModule -failifempty $False -resultobj $result -default false
 #ATTRIBUTE:AutoConfigureLcm;MANDATORY:False;DEFAULTVALUE:false;DESCRIPTION:If true, LCM will be auto-configured for directly invoking DSC resources (which is a one-time requirement for Ansible DSC modules);CHOICES:true,false
@@ -71,24 +51,6 @@ If ($AutoConfigureLcm)
     }
 }
 
-
-if ($Credential_username)
-{
-$Credential_securepassword = $Credential_password | ConvertTo-SecureString -asPlainText -Force
-$Credential = New-Object System.Management.Automation.PSCredential($Credential_username,$Credential_securepassword)
-}
-
-if ($PsDscRunAsCredential_username)
-{
-$PsDscRunAsCredential_securepassword = $PsDscRunAsCredential_password | ConvertTo-SecureString -asPlainText -Force
-$PsDscRunAsCredential = New-Object System.Management.Automation.PSCredential($PsDscRunAsCredential_username,$PsDscRunAsCredential_securepassword)
-}
-
-if ($UnjoinCredential_username)
-{
-$UnjoinCredential_securepassword = $UnjoinCredential_password | ConvertTo-SecureString -asPlainText -Force
-$UnjoinCredential = New-Object System.Management.Automation.PSCredential($UnjoinCredential_username,$UnjoinCredential_securepassword)
-}
 
 $DscResourceName = "xComputer"
 
@@ -163,7 +125,7 @@ Else
     }
     Else
     {
-        Fail-json $result "DSC Local Configuration Manager is not set to disabled. Set the module option AutoConfigureLcm to Disabled in order to auto-configure LCM" 
+        Fail-json $result "DSC Local Configuration Manager is not set to disabled. Set the module option AutoConfigureLcm to True in order to auto-configure LCM" 
     }
 
 }
@@ -171,6 +133,7 @@ Else
 $Attributes = $params | get-member | where {$_.MemberTYpe -eq "noteproperty"}  | select -ExpandProperty Name
 $Attributes = $attributes | where {$_ -ne "autoinstallmodule"}
 $Attributes = $attributes | where {$_ -ne "AutoConfigureLcm"}
+$Attributes = $attributes | where {$_ -notlike "_ansible*"}
 
 
 if (!($Attributes))
@@ -191,7 +154,18 @@ $params.Keys | foreach-object {
     }
 #>
 
-$Keys = $params.psobject.Properties | where {$_.MemberTYpe -eq "Noteproperty"} | where {$_.Name -ne "resource_name"} |where {$_.Name -ne "autoinstallmodule"} |where {$_.Name -ne "autoconfigurelcm"} |  select -ExpandProperty Name
+$CheckMode = $False
+$CheckFlag = $params.psobject.Properties | where {$_.Name -eq "_ansible_check_mode"}
+if ($CheckFlag)
+{
+    if (($CheckFlag.Value) -eq $True)
+    {
+        $CheckMode = $True    
+    }
+    
+}
+
+$Keys = $params.psobject.Properties | where {$_.MemberTYpe -eq "Noteproperty"} | where {$_.Name -ne "resource_name"} |where {$_.Name -ne "autoinstallmodule"} |where {$_.Name -ne "autoconfigurelcm"} | where {$_.Name -notlike "_ansible*"} |  select -ExpandProperty Name
 foreach ($key in $keys)
 {
     $Attrib.add($key, ($params.$key))
@@ -237,7 +211,7 @@ $attrib.Keys | foreach-object {
         }
         Else
         {
-            #Fail-Json -obj $result -message "Property $key in resource $dscresourcename is not a valid property"
+            Fail-Json -obj $result -message "Property $key in resource $dscresourcename is not a valid property"
         }
         
     }
@@ -319,7 +293,15 @@ try
     if ($PSVersionTable.PSVersion.CompareTo($TargetVersion) -ge 0)
     {
         #Current hosts version is production prevoew or higher. Use modulename when invoking.
-        $Params = @{"Modulename"=$resource.Modulename}
+        if ($resource.ModuleName -ne $null)
+        {
+            $Params = @{"Modulename"=$resource.Modulename}    
+        }
+        else 
+        {
+            $Params = @{"Modulename"="PSDesiredStateConfiguration"}    
+        }
+        
     }
     else
     {
@@ -333,9 +315,13 @@ try
     }
     ElseIf (($testResult.InDesiredState) -ne $true) 
     {
-        Invoke-DscResource -Method Set @Config  @params -ErrorVariable SetError -ErrorAction SilentlyContinue
+        if ($CheckMode -eq $False)
+        {
+            $Set = Invoke-DscResource -Method Set @Config  @params -ErrorVariable SetError -ErrorAction SilentlyContinue
+        }
+        
         Set-Attr $result "changed" $true
-        if ($SetError)
+        if ((get-variable | where {$_.Name -eq "seterror"}) -and ($SetError.Count -gt 0))
         {
            throw ($SetError[0].Exception.Message)
         }

@@ -3,10 +3,10 @@
   vars:
     ps_domainname: "pyro.testrealm.local"
     ps_compname: "pyrojr"
-    ps_domainadmin_user: "pyro\\admin"
-    ps_domainadmin_pass: "V@gran7"
+    ps_domainadmin_user: "pyro\\ichiban"
+    ps_domainadmin_pass: "ichiV@gran7"
     ps_dns_addr: "10.255.10.20"
-    ps_iface_name: "Ethernet"
+    ps_iface_name: "Ethernet 2"
   gather_facts: false
   tasks:
   - name: Make sure the LCM refresh mode is disabled

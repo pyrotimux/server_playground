@@ -1,0 +1,20 @@
+---
+  - hosts: ps_guac
+    gather_facts: false
+    become: true
+    tasks:
+    - name: Add Guacamole Repo
+      apt_repository: repo='deb http://ppa.launchpad.net/guacamole/stable/ubuntu precise main' state=present
+    - name: Download Guacamole
+      apt: name="{{ item }}" state=present update_cache=yes
+      with_items: 
+        - freerdp-x11
+        - guacamole-tomcat
+        - libguac-client-ssh0 
+        - libguac-client-rdp0
+    - name: Restart Tomcat
+      service: name=tomcat6 state=started
+    - name: Init Domain
+      copy: src=configs/user-mapping.xml dest=/etc/guacamole/user-mapping.xml owner=root group=guacamole-web mode=0644
+    - name: Restart Guacd
+      service: name=guacd state=restarted

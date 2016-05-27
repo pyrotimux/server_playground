@@ -20,7 +20,7 @@
 # WANT_JSON
 # POWERSHELL_COMMON
 
-$params = Parse-Args $args
+$params = Parse-Args $args -supports_check_mode $true
 $result = New-Object psobject
 Set-Attr $result "changed" $false
 
@@ -250,7 +250,7 @@ Else
     }
     Else
     {
-        Fail-json $result "DSC Local Configuration Manager is not set to disabled. Set the module option AutoConfigureLcm to Disabled in order to auto-configure LCM" 
+        Fail-json $result "DSC Local Configuration Manager is not set to disabled. Set the module option AutoConfigureLcm to True in order to auto-configure LCM" 
     }
 
 }
@@ -258,6 +258,7 @@ Else
 $Attributes = $params | get-member | where {$_.MemberTYpe -eq "noteproperty"}  | select -ExpandProperty Name
 $Attributes = $attributes | where {$_ -ne "autoinstallmodule"}
 $Attributes = $attributes | where {$_ -ne "AutoConfigureLcm"}
+$Attributes = $attributes | where {$_ -notlike "_ansible*"}
 
 
 if (!($Attributes))
@@ -278,7 +279,18 @@ $params.Keys | foreach-object {
     }
 #>
 
-$Keys = $params.psobject.Properties | where {$_.MemberTYpe -eq "Noteproperty"} | where {$_.Name -ne "resource_name"} |where {$_.Name -ne "autoinstallmodule"} |where {$_.Name -ne "autoconfigurelcm"} |  select -ExpandProperty Name
+$CheckMode = $False
+$CheckFlag = $params.psobject.Properties | where {$_.Name -eq "_ansible_check_mode"}
+if ($CheckFlag)
+{
+    if (($CheckFlag.Value) -eq $True)
+    {
+        $CheckMode = $True    
+    }
+    
+}
+
+$Keys = $params.psobject.Properties | where {$_.MemberTYpe -eq "Noteproperty"} | where {$_.Name -ne "resource_name"} |where {$_.Name -ne "autoinstallmodule"} |where {$_.Name -ne "autoconfigurelcm"} | where {$_.Name -notlike "_ansible*"} |  select -ExpandProperty Name
 foreach ($key in $keys)
 {
     $Attrib.add($key, ($params.$key))
@@ -324,7 +336,7 @@ $attrib.Keys | foreach-object {
         }
         Else
         {
-            #Fail-Json -obj $result -message "Property $key in resource $dscresourcename is not a valid property"
+            Fail-Json -obj $result -message "Property $key in resource $dscresourcename is not a valid property"
         }
         
     }
@@ -406,7 +418,15 @@ try
     if ($PSVersionTable.PSVersion.CompareTo($TargetVersion) -ge 0)
     {
         #Current hosts version is production prevoew or higher. Use modulename when invoking.
-        $Params = @{"Modulename"=$resource.Modulename}
+        if ($resource.ModuleName -ne $null)
+        {
+            $Params = @{"Modulename"=$resource.Modulename}    
+        }
+        else 
+        {
+            $Params = @{"Modulename"="PSDesiredStateConfiguration"}    
+        }
+        
     }
     else
     {
@@ -420,9 +440,13 @@ try
     }
     ElseIf (($testResult.InDesiredState) -ne $true) 
     {
-        Invoke-DscResource -Method Set @Config  @params -ErrorVariable SetError -ErrorAction SilentlyContinue
+        if ($CheckMode -eq $False)
+        {
+            $Set = Invoke-DscResource -Method Set @Config  @params -ErrorVariable SetError -ErrorAction SilentlyContinue
+        }
+        
         Set-Attr $result "changed" $true
-        if ($SetError)
+        if ((get-variable | where {$_.Name -eq "seterror"}) -and ($SetError.Count -gt 0))
         {
            throw ($SetError[0].Exception.Message)
         }

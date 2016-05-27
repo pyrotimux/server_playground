@@ -24,12 +24,89 @@
 
 DOCUMENTATION = '''
 ---
-module: win_pc_xdnsserveraddress
+module: win_pc_package
 version_added: 
 short_description: 
 description:
      - 
 options:
+  Name:
+    description:
+      - 
+    required: True
+    default: 
+    aliases: []
+
+  Path:
+    description:
+      - 
+    required: True
+    default: 
+    aliases: []
+
+  ProductId:
+    description:
+      - 
+    required: True
+    default: 
+    aliases: []
+
+  Arguments:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  Credential_username:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  Credential_password:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  Ensure:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+    choices:      - Absent      - Present
+  LogPath:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  PsDscRunAsCredential_username:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  PsDscRunAsCredential_password:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
+  ReturnCode:
+    description:
+      - 
+    required: False
+    default: 
+    aliases: []
+
   AutoInstallModule:
     description:
       - If true, the required dsc resource/module will be auto-installed using the Powershell package manager
