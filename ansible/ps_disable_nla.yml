@@ -1,0 +1,14 @@
+---
+- hosts: ps_ad:ps_main
+  gather_facts: false
+  tasks:
+  - name: Make sure the LCM refresh mode is disabled
+    win_lcm5:
+      refresh_mode: "Disabled"
+  - name: Download xRemoteDesktopAdmin
+    win_oneget:
+      name: "xRemoteDesktopAdmin"
+  - name: Disable NLA and Enable Remote Desktop
+    win_pc_xremotedeskadmin:
+      Ensure: Present
+      UserAuthentication: NonSecure 
