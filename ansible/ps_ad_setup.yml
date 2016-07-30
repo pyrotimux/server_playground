@@ -1,11 +1,11 @@
 ---
-- hosts: ps_main
+- hosts: kg_ad
   vars:
     ps_domainname: "pyro.testrealm.local"
     ps_domainnetbios: "pyro"
-    ps_domainadmin_user: "phyo"
+    ps_domainadmin_user: "pyro"
     ps_domainadmin_pass: "V@gran7"
-    ps_safemodeadmin_user: "safephyo"
+    ps_safemodeadmin_user: "safepyro"
     ps_safemodeadmin_pass: "V@gran7"
     ps_users:
       - { name: 'ichiban', pass: 'ichiV@gran7' }
@@ -25,7 +25,7 @@
     tags:
       - Oneget
   - name: Install ADDS and RSAT
-    win_feature: 
+    win_feature:
       name: "AD-Domain-Services,RSAT-AD-Tools"
     tags:
       - WindowsFeature
@@ -54,7 +54,7 @@
   - name: Promote Users
     win_ad_xadgroup:
       GroupName: "Domain Admins"
-      MembersToInclude: "ichiban, niban, sanban"
+      MembersToInclude: "ichiban, niban"
     tags:
       - PromoteUsers
   handlers:

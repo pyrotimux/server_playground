@@ -26,5 +26,8 @@ $VerbosePreference = "Continue"
 
 # Invoke-AnsibleWinModuleGen -DscResourceName "Package" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_Package"
 
-Invoke-AnsibleWinModuleGen -DscResourceName "xRemoteDesktopAdmin" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_xremotedeskadmin"
+# Invoke-AnsibleWinModuleGen -DscResourceName "xRemoteDesktopAdmin" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_xremotedeskadmin"
 
+# Invoke-AnsibleWinModuleGen -DscResourceName "xSQLServerInstall" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_xsqlserverinstall"
+
+Invoke-AnsibleWinModuleGen -DscResourceName "cScheduleTask" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_cschduletask"

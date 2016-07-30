@@ -1,14 +1,22 @@
 <user-mapping>
    <authorize username="vagrant" password="vagrant">
-        <connection name="PS_AD">
-                <protocol>rdp</protocol>
-                <param name="hostname">10.255.10.21</param>
-                <param name="port">3389</param>
+        <connection name="Store V76">
+                <protocol>vnc</protocol>
+                <param name="hostname">localhost</param>
+                <param name="port">7076</param>
+		<param name="password">H@wa11</param>
         </connection>
-        <connection name="PS_MAIN">
-                <protocol>rdp</protocol>
-                <param name="hostname">10.255.10.20</param>
-                <param name="port">3389</param>
+        <connection name="Store V77">
+                <protocol>vnc</protocol>
+                <param name="hostname">localhost</param>
+                <param name="port">7077</param>
+		<param name="password">H@wa11</param>
+        </connection>
+	<connection name="Store V78">
+                <protocol>vnc</protocol>
+                <param name="hostname">localhost</param>
+                <param name="port">7078</param>
+                <param name="password">H@wa11</param>
         </connection>
     </authorize>
 </user-mapping>

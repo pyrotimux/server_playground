@@ -1,8 +1,29 @@
 ---
-  - hosts: ps_ad
+  - hosts: kg_strgutl
     tasks:
+    - name: Make sure the LCM refresh mode is disabled
+      win_lcm5:
+        refresh_mode: "Disabled"
+    - name: Download GraniResource
+      win_oneget:
+        name: "GraniResource"
+    - name: Schdule Merit Task
+      win_pc_cschduletask:
+        Ensure: Present
+        TaskName: Notepad Schduler
+        Execute:  notepad
+        ScheduledAt: 00:00:00
+        Daily: true
+        Compatibility: "Win8"
+        Disable: false
+    - name: Install RDS
+      win_feature:
+        name: "RDS-RD-Server"
+    - name: Download xSQLPs
+      win_oneget:
+        name: "xSQLPs"
     - name: Install 7-zips
-      win_chocolatey: 
+      win_chocolatey:
         name: "7zip"
         state: present
     - name: Install Google Chrome
@@ -13,7 +34,16 @@
       win_chocolatey:
         name: "cutepdf"
         state: present
-    - name: Install Winscp 
+    - name: Install Winscp
       win_chocolatey:
         name: "winscp"
+        state: present
+    - name: Install SQLServer
+      win_pc_xsqlserverinstall:
+        InstanceName: "MSSQLSERVER"
+        SourcePath: 'C:\vagrant\ansible\configs\setup\sql'
+        Features: "SQL, Tools"
+    - name: Install SQLExpress-Studio
+      win_chocolatey:
+        name: "mssqlservermanagementstudio2014express"
         state: present

@@ -1,8 +1,8 @@
 ---
-- hosts: ps_ad
+- hosts: kg_strgutl
   vars:
     ps_domainname: "pyro.testrealm.local"
-    ps_compname: "pyrojr"
+    ps_compname: "kg_strgutl"
     ps_domainadmin_user: "pyro\\ichiban"
     ps_domainadmin_pass: "ichiV@gran7"
     ps_dns_addr: "10.255.10.20"
@@ -28,7 +28,7 @@
     win_pc_xdnsserveraddress:
       Address: "{{ ps_dns_addr }}"
       InterfaceAlias: "{{ ps_iface_name }}"
-      AddressFamily: "IPv4"    
+      AddressFamily: "IPv4"
   - name: Rename and Join Domain
     win_pc_xcomputer:
       Name: "{{ ps_compname }}"

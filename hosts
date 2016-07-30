@@ -1,0 +1,18 @@
+[kg_gate]
+10.255.10.19    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant
+
+[kg_ad]
+10.255.10.20    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant	ansible_ssh_port=5985	ansible_connection=winrm
+
+[kg_strgutl]
+10.255.10.21    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant	ansible_ssh_port=5985	ansible_connection=winrm
+
+[kg_ts1]
+10.255.10.22    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant	ansible_ssh_port=5985	ansible_connection=winrm
+
+[kg_ts2]
+10.255.10.23    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant	ansible_ssh_port=5985	ansible_connection=winrm
+
+[kg_terminal_servers]
+kg_ts1
+kg_ts2
