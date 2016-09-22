@@ -2,7 +2,7 @@
 - hosts: kg_strgutl
   vars:
     ps_domainname: "pyro.testrealm.local"
-    ps_compname: "kg_strgutl"
+    ps_compname: "kgstrgutl"
     ps_domainadmin_user: "pyro\\ichiban"
     ps_domainadmin_pass: "ichiV@gran7"
     ps_dns_addr: "10.255.10.20"

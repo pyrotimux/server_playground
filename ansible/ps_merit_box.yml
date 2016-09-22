@@ -4,18 +4,18 @@
     - name: Make sure the LCM refresh mode is disabled
       win_lcm5:
         refresh_mode: "Disabled"
-    - name: Download GraniResource
-      win_oneget:
-        name: "GraniResource"
-    - name: Schdule Merit Task
-      win_pc_cschduletask:
-        Ensure: Present
-        TaskName: Notepad Schduler
-        Execute:  notepad
-        ScheduledAt: 00:00:00
-        Daily: true
-        Compatibility: "Win8"
-        Disable: false
+   #- name: Download GraniResource
+     # win_oneget:
+       # name: "GraniResource"
+    #- name: Schdule Merit Task
+     # win_pc_cschduletask:
+       # Ensure: Present
+       # TaskName: Notepad Schduler
+       # Execute:  notepad
+       # ScheduledAt: 00:00:00
+       # Daily: true
+       # Compatibility: "Win8"
+       # Disable: false
     - name: Install RDS
       win_feature:
         name: "RDS-RD-Server"

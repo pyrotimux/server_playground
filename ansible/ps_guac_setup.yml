@@ -1,5 +1,5 @@
 ---
-  - hosts: ps_guac
+  - hosts: kg_gate
     gather_facts: false
     become: true
     tasks:

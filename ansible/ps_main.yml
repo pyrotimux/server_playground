@@ -1,4 +1,6 @@
 ---
+  - name: Setup Guacamole
+    include: ./ps_guac_setup.yml 
   - name: Setup and Init ADDC
     include: ./ps_ad_setup.yml
   - name: Join others to the Domain
