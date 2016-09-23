@@ -2,6 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
+  config.vm.provider "virtualbox" do |v|
+    v.gui = true
+  end
 
   config.vm.define "kg_control" do |kg_gate|
     kg_gate.vm.box = "ubuntu/trusty64"
