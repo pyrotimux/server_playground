@@ -3,7 +3,7 @@
 
 Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |v|
-    v.gui = true
+    v.gui = false
   end
 
   config.vm.define "kg_control" do |kg_gate|
