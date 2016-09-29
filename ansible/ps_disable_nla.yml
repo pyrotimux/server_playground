@@ -1,5 +1,5 @@
 ---
-- hosts: ps_ad:ps_main
+- hosts: kg_ad:kg_strgutl
   gather_facts: false
   tasks:
   - name: Make sure the LCM refresh mode is disabled
