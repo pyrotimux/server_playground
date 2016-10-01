@@ -19,9 +19,14 @@
       refresh_mode: "Disabled"
     tags:
       - Config
-  - name: Download required Packages
+  - name: Download xActiveDirectory
     win_oneget:
       name: "xActiveDirectory"
+    tags:
+      - Oneget
+  - name: Download xNetworking
+    win_oneget:
+      name: "xNetworking"
     tags:
       - Oneget
   - name: Install ADDS and RSAT
@@ -57,6 +62,11 @@
       MembersToInclude: "ichiban, niban"
     tags:
       - PromoteUsers
+  - name: Change DNS Address
+    win_pc_xdnsserveraddress:
+      Address: "8.8.8.8"
+      InterfaceAlias: "Ethernet 2"
+      AddressFamily: "IPv4"
   handlers:
   - name: Reboot Server
     win_reboot:

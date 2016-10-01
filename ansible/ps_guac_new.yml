@@ -11,9 +11,7 @@
       ps_dependencies:
         - apache2
         - libcairo2-dev
-        - libjpeg-dev
-        - libjpeg8-dev
-        - libjpeg-turbo8-dev
+        - libjpeg62-dev
         - libpng12-dev
         - libossp-uuid-dev
         - libguac-dev
@@ -28,7 +26,6 @@
         - libpango1.0-dev
         - libssh2-1-dev
         - libtelnet-dev
-        - libvncserver-dev
         - libpulse-dev
         - libssl-dev
         - libvorbis-dev

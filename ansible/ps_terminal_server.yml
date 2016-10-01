@@ -1,12 +1,12 @@
 ---
-  - hosts: ps_ad
+  - hosts: kg_ts1:kg_ts2
     gather_facts: false
     tasks:
     - name: Make sure the LCM refresh mode is disabled
       win_lcm5:
         refresh_mode: "Disabled"
     - name: Install Net3
-      win_feature: 
+      win_feature:
         name: "Net-Framework-Core"
     - name: Install DotNet Package
       win_chocolatey:
@@ -28,11 +28,11 @@
     - name: Install VC2005
       win_chocolatey:
         name: "vcredist2005"
-        state: present 
+        state: present
     - name: Install SQLCE
       win_pc_package:
         Name: "Microsoft SQL Server Compact 4.0 x64 ENU"
-        Path: 'C:\vagrant\ansible\tssetup\massetup\Prerequisites\MsSqlServerCE\SSCERuntime_x64-ENU.msi'
+        Path: 'C:\vagrant\ansible\setup\tssetup\Prerequisites\MsSqlServerCE\SSCERuntime_x64-ENU.msi'
         ProductId: "{8424B163-D1E0-48B7-88A2-C7A61767B3D7}"
         Arguments: '/qn'
       tags:
@@ -40,7 +40,7 @@
     - name: Install VSTO
       win_pc_package:
         Name: "Microsoft Visual Studio 2010 Tools for Office Runtime (x64)"
-        Path: 'C:\vagrant\ansible\tssetup\massetup\Prerequisites\VSTO 2010 Runtime\vstor40x64.exe'
+        Path: 'C:\vagrant\ansible\setup\tssetup\Prerequisites\VSTO 2010 Runtime\vstor40_x64.exe'
         ProductId: "{C3600AE6-93A0-3DB7-B7AA-45BD58F133B5}"
         Arguments: '/qn'
       tags:
@@ -48,7 +48,7 @@
     - name: Install SQLCLI
       win_pc_package:
         Name: "Microsoft SQL Server 2008 R2 Native Client"
-        Path: 'C:\vagrant\ansible\tssetup\massetup\Prerequisites\SQLNativeClient\2008R2\x64\sqlncli.msi'
+        Path: 'C:\vagrant\ansible\setup\tssetup\Prerequisites\SQLNativeClient\2008R2\x64\sqlncli.msi'
         ProductId: "{2180B33F-3225-423E-BBC1-7798CFD3CD1F}"
         Arguments: '/qn IACCEPTSQLNCLILICENSETERMS=YES'
       tags:
@@ -56,10 +56,10 @@
     - name: Install MAS
       win_pc_package:
         Name: "Sage 100 ERP 2015 Workstation"
-        Path: 'C:\vagrant\ansible\tssetup\massetup\Sage 100 ERP 2015 Workstation.msi'
+        Path: 'C:\vagrant\ansible\setup\tssetup\Sage 100 ERP 2015 Workstation.msi'
         ProductId: "{0126AFE4-F229-4BDE-8ED5-225C52DB038F}"
-        Arguments: '/quiet /l*v "C:\Windows\Temp\mas.log" SAGEPORTID="9998" SAGESERVERNAME="HSYMAS03" SRCSERVERPATH="C:\vagrant\ansible\tssetup\massetup\" INSTALLDIR="C:\Sage\Sage 100 ERP 2015 Worstation\MAS90\"'
-    - name: Copy the License
-      win_copy:
-        src: "tssetup/massetup/MAS90/Home/Lib/Keys/ACTIVATE.PVX"
-        dest: '"C:\\Sage\\Sage 100 ERP 2015 Worstation\\MAS90\\Home\\Lib\\Keys\\"' 
+        Arguments: '/quiet /l*v "C:\Windows\Temp\mas.log" SAGEPORTID="9998" SAGESERVERNAME="HSYMAS03" SRCSERVERPATH="C:\vagrant\ansible\setup\tssetup\" INSTALLDIR="C:\Sage\Sage 100 ERP 2015 Worstation\MAS90\"'
+    #- name: Copy the License
+      #win_copy:
+        #src: "tssetup/massetup/MAS90/Home/Lib/Keys/ACTIVATE.PVX"
+        #dest: '"C:\\Sage\\Sage 100 ERP 2015 Worstation\\MAS90\\Home\\Lib\\Keys\\"'

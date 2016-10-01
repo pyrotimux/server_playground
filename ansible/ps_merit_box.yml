@@ -41,7 +41,7 @@
     - name: Install SQLServer
       win_pc_xsqlserverinstall:
         InstanceName: "MSSQLSERVER"
-        SourcePath: 'C:\vagrant\ansible\configs\setup\sql'
+        SourcePath: 'C:\vagrant\ansible\setup\sql'
         Features: "SQL, Tools"
     - name: Install SQLExpress-Studio
       win_chocolatey:
