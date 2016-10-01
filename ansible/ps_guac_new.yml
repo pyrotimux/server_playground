@@ -3,7 +3,7 @@
     gather_facts: true
     become: true
     vars:
-      ps_guacd_port: 8080
+      ps_guacd_port: 4822
       ps_tomcat: tomcat7
       ps_guac_home: /usr/share/{{ ps_tomcat }}/.guacamole
       ps_guac_server: 0.9.9

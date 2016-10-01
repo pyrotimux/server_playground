@@ -11,4 +11,4 @@
   - name: Disable NLA and Enable Remote Desktop
     win_pc_xremotedeskadmin:
       Ensure: Present
-      UserAuthentication: NonSecure 
+      UserAuthentication: NonSecure
