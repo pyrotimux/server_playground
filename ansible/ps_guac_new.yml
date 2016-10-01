@@ -1,0 +1,99 @@
+---
+  - hosts: kg_gate
+    gather_facts: true
+    become: true
+    vars:
+      ps_guacd_port: 8080
+      ps_tomcat: tomcat7
+      ps_guac_home: /usr/share/{{ ps_tomcat }}/.guacamole
+      ps_guac_server: 0.9.9
+      ps_guac_client: 0.9.9
+      ps_dependencies:
+        - apache2
+        - libcairo2-dev
+        - libjpeg-dev
+        - libjpeg8-dev
+        - libjpeg-turbo8-dev
+        - libpng12-dev
+        - libossp-uuid-dev
+        - libguac-dev
+        - "{{ ps_tomcat }}"
+        - "{{ ps_tomcat }}-common"
+        - libtomcat7-java
+        - software-properties-common
+        - default-jdk
+        - python-psycopg2
+        - libpq-dev
+        - libfreerdp-dev
+        - libpango1.0-dev
+        - libssh2-1-dev
+        - libtelnet-dev
+        - libvncserver-dev
+        - libpulse-dev
+        - libssl-dev
+        - libvorbis-dev
+        - libwebp-dev
+    tasks:
+    - name: Copy Server Setup Files
+      copy: src="setup/guacamole/guacamole-server-{{ ps_guac_server }}.tar.gz" dest=/tmp/
+      tags: file
+
+    - name: Extract the server source
+      unarchive: src="/tmp/guacamole-server-{{ ps_guac_server }}.tar.gz" copy=no dest="/tmp/"
+      tags: extract
+
+    - tags: install
+      block:
+      - name: Add Java repo
+        apt_repository: repo="ppa:webupd8team/java"
+      - name: Install dependencies for guacamole
+        package: name={{ item }} state=latest update_cache=yes
+        with_items: '{{ ps_dependencies }}'
+      - name: Build from source
+        shell: '{{ item }}'
+        args:
+          chdir: /tmp/guacamole-server-{{ ps_guac_server }}
+          creates: /usr/local/sbin/guacd
+        with_items: [ ./configure --with-init-dir=/etc/init.d, make, make install ]
+      - name: Run ldconfig
+        shell: ldconfig
+      - name: Add autostart
+        command: update-rc.d guacd defaults
+
+    - name: Copy over client
+      copy: src="setup/guacamole/guacamole-{{ ps_guac_client }}.war" dest=/var/lib/{{ ps_tomcat }}/webapps/guacamole.war
+      tags: file
+
+    - name: Make home directory
+      file: path='{{ ps_guac_home }}' state=directory
+      tags: configuration
+
+    - name: Make a link
+      file:
+        src: '{{ ps_guac_home }}'
+        dest: /etc/guacamole
+        state: link
+        force: yes
+        follow: true
+
+    - name: Add properties
+      template: src="configs/guacamole.properties.j2" dest="{{ ps_guac_home }}/guacamole.properties"
+      tags: template
+
+    - name: Add user maps
+      copy: src="configs/user-mapping.xml.j2" dest="{{ ps_guac_home }}/user-mapping.xml"
+      tags: template
+
+    - name: Cleanup temp
+      file: path={{ item }} state=absent
+      with_items:
+        - /tmp/guacamole-server-{{ ps_guac_server }}.tar.gz
+        - /tmp/guacamole-server-{{ ps_guac_server }}
+      ignore_errors: yes
+      tags: cleanup
+
+    - name: Restart services
+      service: name={{ item }} state=restarted
+      with_items: [ '{{ ps_tomcat }}', guacd ]
+      ignore_errors: yes
+      tags: restart

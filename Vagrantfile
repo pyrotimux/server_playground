@@ -42,8 +42,6 @@ Vagrant.configure(2) do |config|
     kg_ts1.vm.box = "eltuko/win2012r2-chef-pester"
     kg_ts1.vm.communicator = "winrm"
     kg_ts1.vm.network :private_network, ip: "10.255.10.22"
-    kg_ts1.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
-    kg_ts1.vm.network :forwarded_port, guest: 3389, host: 3389, id:"rdp", auto_correct: true
     kg_ts1.vm.provision "shell", path: "preps/win_prereqs.ps1"
   end
 
@@ -52,8 +50,6 @@ Vagrant.configure(2) do |config|
     kg_ts1.vm.box = "eltuko/win2012r2-chef-pester"
     kg_ts1.vm.communicator = "winrm"
     kg_ts1.vm.network :private_network, ip: "10.255.10.23"
-    kg_ts1.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
-    kg_ts1.vm.network :forwarded_port, guest: 3389, host: 3389, id:"rdp", auto_correct: true
     kg_ts1.vm.provision "shell", path: "preps/win_prereqs.ps1"
   end
 
