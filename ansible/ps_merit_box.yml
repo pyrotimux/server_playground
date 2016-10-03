@@ -1,5 +1,17 @@
 ---
   - hosts: kg_strgutl
+    vars:
+      ps_softwares:
+        - notepadplusplus
+        - 7zip
+        - googlechrome
+        - filezilla
+        - ccleaner
+        - adobereader
+        - pdf24
+        - cutepdf
+        - winscp
+        - mssqlservermanagementstudio2014express
     tasks:
     - name: Make sure the LCM refresh mode is disabled
       win_lcm5:
@@ -22,22 +34,6 @@
     - name: Download xSQLPs
       win_oneget:
         name: "xSQLPs"
-    - name: Install 7-zips
-      win_chocolatey:
-        name: "7zip"
-        state: present
-    - name: Install Google Chrome
-      win_chocolatey:
-        name: "googlechrome"
-        state: present
-    - name: Install Cute PDF
-      win_chocolatey:
-        name: "cutepdf"
-        state: present
-    - name: Install Winscp
-      win_chocolatey:
-        name: "winscp"
-        state: present
     - name: Install SQLServer
       win_pc_xsqlserverinstall:
         InstanceName: "MSSQLSERVER"
@@ -47,3 +43,6 @@
       win_chocolatey:
         name: "mssqlservermanagementstudio2014express"
         state: present
+    - name: Install Merit Box related Softwares
+      win_chocolatey: name="{{ item }}" state=present
+      with_items: "{{ ps_softwares }}"

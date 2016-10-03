@@ -1,13 +1,14 @@
 ---
-- hosts: kg_strgutl
+- hosts: kg_strgutl:kg_ts1:kg_ts2
+  gather_facts: true
   vars:
     ps_domainname: "pyro.testrealm.local"
-    ps_compname: "kgstrgutl"
     ps_domainadmin_user: "pyro\\ichiban"
     ps_domainadmin_pass: "ichiV@gran7"
     ps_dns_addr: "10.255.10.20"
     ps_iface_name: "Ethernet 2"
-  gather_facts: false
+    ps_domain_dict: {"10.255.10.20":"KGAD", "10.255.10.21":"KGSTRGUTL", "10.255.10.22":"KGTS1", "10.255.10.23":"KGTS2"}
+
   tasks:
   - name: Make sure the LCM refresh mode is disabled
     win_lcm5:
@@ -31,7 +32,7 @@
       AddressFamily: "IPv4"
   - name: Rename and Join Domain
     win_pc_xcomputer:
-      Name: "{{ ps_compname }}"
+      Name: "{{ ps_domain_dict[inventory_hostname] }}"
       DomainName: "{{ ps_domainname }}"
       Credential_username: "{{ ps_domainadmin_user }}"
       Credential_password: "{{ ps_domainadmin_pass }}"

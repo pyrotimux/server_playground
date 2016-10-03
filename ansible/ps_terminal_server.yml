@@ -1,10 +1,28 @@
 ---
   - hosts: kg_ts1:kg_ts2
     gather_facts: false
+    vars:
+      ps_softwares:
+        - notepadplusplus
+        - 7zip
+        - firefox
+        - googlechrome
+        - filezilla
+        - ccleaner
+        - adobereader
+        - keepassx
+        - foxitreader
+        - pdf24
+        - cutepdf
+        - vcredist2010
+        - vcredist2005
     tasks:
     - name: Make sure the LCM refresh mode is disabled
       win_lcm5:
         refresh_mode: "Disabled"
+    - name: Install Terminal Server related Softwares
+      win_chocolatey: name="{{ item }}" state=present
+      with_items: "{{ ps_softwares }}"
     - name: Install Net3
       win_feature:
         name: "Net-Framework-Core"
@@ -17,18 +35,6 @@
         - "dotnet4.5"
       tags:
         - PreReqs
-    - name: Install Cute PDF
-      win_chocolatey:
-        name: "cutepdf"
-        state: present
-    - name: Install VC2010
-      win_chocolatey:
-        name: "vcredist2010"
-        state: present
-    - name: Install VC2005
-      win_chocolatey:
-        name: "vcredist2005"
-        state: present
     - name: Install SQLCE
       win_pc_package:
         Name: "Microsoft SQL Server Compact 4.0 x64 ENU"

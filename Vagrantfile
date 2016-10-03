@@ -45,12 +45,12 @@ Vagrant.configure(2) do |config|
     kg_ts1.vm.provision "shell", path: "preps/win_prereqs.ps1"
   end
 
-  config.vm.define "kg_ts2" do |kg_ts1|
-    kg_ts1.vm.guest = :windows
-    kg_ts1.vm.box = "eltuko/win2012r2-chef-pester"
-    kg_ts1.vm.communicator = "winrm"
-    kg_ts1.vm.network :private_network, ip: "10.255.10.23"
-    kg_ts1.vm.provision "shell", path: "preps/win_prereqs.ps1"
+  config.vm.define "kg_ts2" do |kg_ts2|
+    kg_ts2.vm.guest = :windows
+    kg_ts2.vm.box = "eltuko/win2012r2-chef-pester"
+    kg_ts2.vm.communicator = "winrm"
+    kg_ts2.vm.network :private_network, ip: "10.255.10.23"
+    kg_ts2.vm.provision "shell", path: "preps/win_prereqs.ps1"
   end
 
 

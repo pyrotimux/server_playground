@@ -8,12 +8,12 @@ This repo is work in progress so use at your own risk!!!
 --------------
 
 # Boxes Explanation
-kg_control = Ubuntu Controller to run ansible plays
-kg_gate = Ubuntu Guacamole server
-kg_ad = Windows Active Directory
-kg_strgutl = Windows Storage Utilities / Merit Box
-kg_ts1 = Terminal Server 1
-kg_ts2 = Terminal Server 2
+kg_control = Ubuntu Controller to run ansible plays <br />
+kg_gate = Ubuntu Guacamole server <br />
+kg_ad = Windows Active Directory <br />
+kg_strgutl = Windows Storage Utilities / Merit Box <br />
+kg_ts1 = Terminal Server 1 <br />
+kg_ts2 = Terminal Server 2 <br />
 
 The playbook where everthing is stiched up is ps_main.yml
 All plays have vars to be modifed at the top. 

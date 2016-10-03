@@ -1,5 +1,5 @@
 ---
-- hosts: kg_ad:kg_strgutl:kg_ts1
+- hosts: kg_ad:kg_strgutl:kg_ts1:kg_ts2
   gather_facts: false
   tasks:
   - name: Make sure the LCM refresh mode is disabled
