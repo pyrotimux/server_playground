@@ -1,0 +1,40 @@
+---
+  - hosts: kg_samba
+    gather_facts: false
+    become: true
+    vars:
+      ps_samba_home: /etc/samba
+      ps_samba_grp: kgsmbgrp
+      ps_samba_user: kgsmbusr
+      ps_samba_pass: V@gran7
+      ps_shared_path: /srv/samba/shared
+      ps_packages:
+          - samba
+          - samba-common
+          - python-glade2
+          - system-config-samba
+    tasks:
+    - name: Copy Server Setup Files
+      package: name={{ item }} state=latest update_cache=yes
+      with_items: '{{ ps_packages }}'
+
+    - name: Extract the server source
+      copy: src="configs/smb.conf.j2" dest="{{ ps_samba_home }}/smb.conf"
+
+    - name: Add Samba group
+      group: name="{{ ps_samba_grp }}" state=present
+
+    - name: Add Samba User
+      user: name="{{ ps_samba_user }}" group=admin
+
+    - name: Set password for user
+      raw: (echo "{{ ps_samba_pass }}"; echo "{{ ps_samba_pass }}") | smbpasswd -s
+
+    - name: Create shared folder
+      file: path="{{ ps_shared_path }}" state=directory owner="{{ ps_samba_user }}" group="{{ ps_samba_grp }}" mode=0770
+
+    - name: Restart services
+      service: name={{ item }} state=restarted
+      with_items: [ smbd, nmbd ]
+      ignore_errors: yes
+      tags: restart
