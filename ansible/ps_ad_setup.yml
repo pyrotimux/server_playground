@@ -53,6 +53,7 @@
       UserName: "{{ item.name }}"
       Password_username: "{{ item.name }}"
       Password_password: "{{ item.pass }}"
+      
     with_items: "{{ ps_users }}"
     tags:
       - AddUsers

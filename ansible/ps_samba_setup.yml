@@ -1,13 +1,13 @@
 ---
   - hosts: kg_samba
-    gather_facts: false
+    gather_facts: true
     become: true
     vars:
       ps_samba_home: /etc/samba
       ps_samba_grp: kgsmbgrp
       ps_samba_user: kgsmbusr
       ps_samba_pass: V@gran7
-      ps_shared_path: /srv/samba/shared
+      ps_shared_path: /etc/samba/profiles
       ps_packages:
           - samba
           - samba-common
@@ -25,10 +25,10 @@
       group: name="{{ ps_samba_grp }}" state=present
 
     - name: Add Samba User
-      user: name="{{ ps_samba_user }}" group=admin
+      user: name="{{ ps_samba_user }}" group="{{ ps_samba_grp }}"
 
     - name: Set password for user
-      raw: (echo "{{ ps_samba_pass }}"; echo "{{ ps_samba_pass }}") | smbpasswd -s
+      raw: (echo "{{ ps_samba_pass }}"; echo "{{ ps_samba_pass }}") | smbpasswd -a "{{ ps_samba_user }}"
 
     - name: Create shared folder
       file: path="{{ ps_shared_path }}" state=directory owner="{{ ps_samba_user }}" group="{{ ps_samba_grp }}" mode=0770

@@ -7,14 +7,14 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "kg_control" do |kg_gate|
-    kg_gate.vm.box = "ubuntu/trusty64"
+    kg_gate.vm.box = "bento/ubuntu-16.04"
     kg_gate.vm.hostname = "kgcontrol"
     kg_gate.vm.network :private_network, ip: "10.255.10.18"
     kg_gate.vm.provision "shell", path: "preps/ubn_ansprep.sh"
   end
 
   config.vm.define "kg_gate" do |kg_gate|
-    kg_gate.vm.box = "ubuntu/trusty64"
+    kg_gate.vm.box = "bento/ubuntu-16.04"
     kg_gate.vm.hostname = "kggate"
     kg_gate.vm.network :private_network, ip: "10.255.10.19"
   end
@@ -54,7 +54,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "kg_samba" do |kg_gate|
-    kg_gate.vm.box = "ubuntu/trusty64"
+    kg_gate.vm.box = "bento/ubuntu-16.04"
     kg_gate.vm.hostname = "kgsamba"
     kg_gate.vm.network :private_network, ip: "10.255.10.24"
   end

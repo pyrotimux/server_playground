@@ -12,3 +12,6 @@
 
 [kg_ts2]
 10.255.10.23    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant	ansible_ssh_port=5985	ansible_connection=winrm
+
+[kg_samba]
+10.255.10.24    ansible_ssh_user=vagrant    ansible_ssh_pass=vagrant

@@ -1,8 +1,8 @@
 [global]
-   workgroup = KAZIGROUP
+   realm = pyro.testrealm.local
    server string = Samba Server %v
    netbios name = kgsamba
-   security = user
+   security = ads
    dns proxy = no
    log file = /var/log/samba/log.%m
    max log size = 1000
@@ -10,27 +10,14 @@
    map to guest = bad user
    server role = standalone server
 
-[Shared]
+[profiles]
    comment = Home Directories
-   path = {{ ps_shared_path }}
-   valid users = @{{ ps_samba_grp }}
-   browseable = no
+   path = /etc/samba/profiles
+   # valid users = @kgsmbgrp
+   browseable = yes
    guest ok = no
    read only = no
    create mask = 0770
-
-[printers]
-   comment = All Printers
-   browseable = no
-   path = /var/spool/samba
-   printable = yes
-   guest ok = no
-   read only = yes
-   create mask = 0700
-
-[print$]
-   comment = Printer Drivers
-   path = /var/lib/samba/printers
-   browseable = yes
-   read only = yes
-   guest ok = no
+   profile acls = yes
+   csc policy = disable
+   store dos attributes = Yes
