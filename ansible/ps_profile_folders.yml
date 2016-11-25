@@ -1,0 +1,33 @@
+---
+  - name: Create profile root
+    win_pc_file:
+      DestinationPath: "\\\\KGSTRGUTL\\c$\\profiles"
+      Ensure: Present
+      Attributes: Hidden
+      Type: Directory
+      Force: True
+  - name: Create user profile
+    win_pc_file:
+      DestinationPath: "\\\\KGSTRGUTL\\c$\\profiles\\{{ ps_user }}"
+      Ensure: Present
+      Type: Directory
+      Force: True
+      PsDscRunAsCredential_username: "{{ ps_user }}"
+      PsDscRunAsCredential_password: "{{ ps_pass }}"
+  - name: Add user profile items
+    win_pc_file:
+      DestinationPath: "\\\\KGSTRGUTL\\c$\\profiles\\{{ ps_user }}\\{{ psfolders }}"
+      Ensure: Present
+      Type: Directory
+      Force: True
+      PsDscRunAsCredential_username: "{{ ps_user }}"
+      PsDscRunAsCredential_password: "{{ ps_pass }}"
+    loop_control:
+      loop_var: psfolders
+    with_items:
+      - Desktop
+      - Documents
+      - Downloads
+      - Music
+      - Pictures
+      - Favorites

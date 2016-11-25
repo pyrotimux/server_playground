@@ -1,0 +1,21 @@
+---
+  - name: Create Folders
+    hosts: kg_strgutl
+    tasks:
+    - include: ./ps_profile_folders.yml ps_user="{{ item.name }}" ps_pass="{{ item.pass }}"
+      with_items:
+        - { name: 'ichiban', pass: 'ichiV@gran7' }
+        - { name: 'niban', pass: 'niV@gran7' }
+        - { name: 'sanban', pass: 'sanV@gran7'}
+        - { name: 'yonban', pass: 'yonV@gran7'}
+      tags:
+        - FolderInit
+  - name: Add Policy
+    hosts: kg_ts1:kg_ts2
+    tasks:
+    - include: ./ps_redirect_folders.yml ps_user="{{ item.name }}" ps_pass="{{ item.pass }}"
+      with_items:
+        - { name: 'ichiban', pass: 'ichiV@gran7' }
+        - { name: 'niban', pass: 'niV@gran7' }
+      tags:
+        - PolicyInit
