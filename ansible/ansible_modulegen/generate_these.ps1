@@ -30,4 +30,8 @@ $VerbosePreference = "Continue"
 
 # Invoke-AnsibleWinModuleGen -DscResourceName "xSQLServerInstall" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_xsqlserverinstall"
 
-Invoke-AnsibleWinModuleGen -DscResourceName "cScheduleTask" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_cschduletask"
+# Invoke-AnsibleWinModuleGen -DscResourceName "cScheduleTask" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_cschduletask"
+
+# Invoke-AnsibleWinModuleGen -DscResourceName "Registry" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_registry"
+
+Invoke-AnsibleWinModuleGen -DscResourceName "File" -TargetPath "C:\vagrant\ansible\library" -TargetModuleName "win_pc_file"

@@ -1,0 +1,15 @@
+---
+- hosts: kg_ad
+  gather_facts: true
+  tasks:
+  # use the win_pc_file to create the folder. use %username% env var to differentiate the folders.
+  # this needs to happen for all the host and all the users. it's a bit different then roaming profiles. 
+  - name: Change Reg Key
+    win_pc_registry:
+      Ensure: Present
+      Force: True
+      Key: "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders"
+      ValueName: "Desktop"
+      ValueData: "\\\\KGSTRGUTL\\c$\\profiles\\%username%"
+      PsDscRunAsCredential_username: "ichiban"
+      PsDscRunAsCredential_password: "ichiV@gran7"
