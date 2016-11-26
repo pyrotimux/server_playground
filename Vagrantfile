@@ -53,11 +53,5 @@ Vagrant.configure(2) do |config|
     kg_ts2.vm.provision "shell", path: "preps/win_prereqs.ps1"
   end
 
-  config.vm.define "kg_samba" do |kg_gate|
-    kg_gate.vm.box = "bento/ubuntu-16.04"
-    kg_gate.vm.hostname = "kgsamba"
-    kg_gate.vm.network :private_network, ip: "10.255.10.24"
-  end
-
 
 end
