@@ -1,19 +1,24 @@
 ---
-  - name: Change Reg Key
+  - name: Change Reg Key For User Shell Folders
     win_pc_registry:
       Ensure: Present
       Force: True
       Key: "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders\\"
-      ValueName: "{{ psfolders }}"
-      ValueData: "\\\\KGSTRGUTL\\c$\\profiles\\{{ ps_user }}\\{{ psfolders }}"
+      ValueName: "{{ psfolders.from }}"
+      ValueData: "\\\\KGSTRGUTL\\c$\\profiles\\{{ ps_user }}\\{{ psfolders.to }}"
       PsDscRunAsCredential_username: "{{ ps_user }}"
       PsDscRunAsCredential_password: "{{ ps_pass }}"
     loop_control:
       loop_var: psfolders
     with_items:
-      - Desktop
-      - Documents
-      - Downloads
-      - Music
-      - Pictures
-      - Favorites
+      - { from: 'Desktop', to: 'Desktop' }
+      - { from: 'Documents', to: 'Documents' }
+      - { from: 'Personal', to: 'Documents' }
+      - { from: 'Personal', to: 'Documents' }
+      - { from: 'Favorites', to: 'Favorites' }
+      - { from: 'Music', to: 'Music' }
+      - { from: 'My Music', to: 'Music' }
+      - { from: 'Pictures', to: 'Pictures' }
+      - { from: 'My Pictures', to: 'Pictures' }
+      - { from: 'Video', to: 'Video' }
+      - { from: 'My Video', to: 'Video' }
