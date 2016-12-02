@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require './preps/vagrant-provision-reboot-plugin'
 
 Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |v|
@@ -26,6 +27,7 @@ Vagrant.configure(2) do |config|
     kg_ad.vm.hostname = "kgad"
     kg_ad.vm.network :private_network, ip: "10.255.10.20"
     kg_ad.vm.provision "shell", path: "preps/win_prereqs.ps1"
+    kg_ad.vm.provision :windows_reboot
  end
 
   config.vm.define "kg_strgutl" do |kg_strgutl|
@@ -35,6 +37,7 @@ Vagrant.configure(2) do |config|
     kg_strgutl.vm.hostname = "kgstrgutl"
     kg_strgutl.vm.network :private_network, ip: "10.255.10.21"
     kg_strgutl.vm.provision "shell", path: "preps/win_prereqs.ps1"
+    kg_strgutl.vm.provision :windows_reboot
   end
 
   config.vm.define "kg_ts1" do |kg_ts1|
@@ -43,6 +46,7 @@ Vagrant.configure(2) do |config|
     kg_ts1.vm.communicator = "winrm"
     kg_ts1.vm.network :private_network, ip: "10.255.10.22"
     kg_ts1.vm.provision "shell", path: "preps/win_prereqs.ps1"
+    kg_ts1.vm.provision :windows_reboot
   end
 
   config.vm.define "kg_ts2" do |kg_ts2|
@@ -51,6 +55,7 @@ Vagrant.configure(2) do |config|
     kg_ts2.vm.communicator = "winrm"
     kg_ts2.vm.network :private_network, ip: "10.255.10.23"
     kg_ts2.vm.provision "shell", path: "preps/win_prereqs.ps1"
+    kg_ts2.vm.provision :windows_reboot
   end
 
 
