@@ -47,13 +47,14 @@
     notify:
       - Reboot Server
   - meta: flush_handlers
+  - pause:
+    minutes: 2
   - name: Add Users
     win_ad_xaduser:
       DomainName: "{{ ps_domainname }}"
       UserName: "{{ item.name }}"
       Password_username: "{{ item.name }}"
       Password_password: "{{ item.pass }}"
-      
     with_items: "{{ ps_users }}"
     tags:
       - AddUsers

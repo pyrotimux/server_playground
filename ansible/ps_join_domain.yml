@@ -5,8 +5,9 @@
     ps_domainname: "pyro.testrealm.local"
     ps_domainadmin_user: "pyro\\ichiban"
     ps_domainadmin_pass: "ichiV@gran7"
-    ps_dns_addr: "10.255.10.20"
-    ps_iface_name: "Ethernet 2"
+    ps_iface:
+      - { name: 'ichiban', dns: '10.255.10.20' }
+      - { name: 'Ethernet 2', dns: '10.255.10.20' }
     ps_domain_dict: {"10.255.10.20":"KGAD", "10.255.10.21":"KGSTRGUTL", "10.255.10.22":"KGTS1", "10.255.10.23":"KGTS2"}
 
   tasks:
@@ -27,9 +28,10 @@
       - Oneget
   - name: Change DNS Address
     win_pc_xdnsserveraddress:
-      Address: "{{ ps_dns_addr }}"
-      InterfaceAlias: "{{ ps_iface_name }}"
+      Address: "{{ item.dns }}"
+      InterfaceAlias: "{{ item.name }}"
       AddressFamily: "IPv4"
+    with_items: "{{ ps_iface }}"
   - name: Rename and Join Domain
     win_pc_xcomputer:
       Name: "{{ ps_domain_dict[inventory_hostname] }}"
