@@ -38,6 +38,10 @@
       DomainName: "{{ ps_domainname }}"
       Credential_username: "{{ ps_domainadmin_user }}"
       Credential_password: "{{ ps_domainadmin_pass }}"
+    register: result
+    until: result|success
+    retries: 2
+    delay: 10
     tags:
       - CompInit
     notify:

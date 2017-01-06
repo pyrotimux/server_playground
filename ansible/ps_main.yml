@@ -7,7 +7,7 @@
     include: ./ps_ad_setup.yml
   - name: Join others to the Domain
     include: ./ps_join_domain.yml
-  - name: Setup Merit Box
-    include: ./ps_merit_box.yml
-  - name: Setup Terminal Server
-    include: ./ps_terminal_server.yml
+#  - name: Setup Merit Box
+#    include: ./ps_merit_box.yml
+#  - name: Setup Terminal Server
+#    include: ./ps_terminal_server.yml
