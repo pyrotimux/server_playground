@@ -47,8 +47,9 @@
     notify:
       - Reboot Server
   - meta: flush_handlers
-  - pause:
-    minutes: 2
+  - name: Pause for 2 min
+    pause:
+      minutes: 2
   - name: Add Users
     win_ad_xaduser:
       DomainName: "{{ ps_domainname }}"

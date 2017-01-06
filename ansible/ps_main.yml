@@ -5,8 +5,6 @@
     include: ./ps_disable_nla.yml
   - name: Setup and Init ADDC
     include: ./ps_ad_setup.yml
-  - pause:
-    minutes: 2
   - name: Join others to the Domain
     include: ./ps_join_domain.yml
   - name: Setup Merit Box
