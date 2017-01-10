@@ -29,12 +29,14 @@ ps_guac_setup = old guac 0.8.3 setup <br />
 ps_main = where stable plays are stitched up <br />
 ps_merit_box = merti box set up <br />
 ps_terminal_server =  terminal server set up <br />
- <br />
-Semi stable <br />
---------------
 ps_setup_profiles = this is where we set up the folder redirection <br />
 ps_profile_folders = this is where we set up the folders. this can be replaced with samba. <br />
 ps_redirect_folders = this is where we patch the registry <br />
+ <br />
+Semi stable <br />
+--------------
+None
+
  <br />
 Not working <br />
 --------------
