@@ -1,6 +1,5 @@
 .vagrant/
 *~
 *.retry
-ansible/setup/tssetup
-ansible/setup/sql
+ansible/setup
 

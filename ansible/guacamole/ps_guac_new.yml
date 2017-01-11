@@ -32,7 +32,7 @@
         - libwebp-dev
     tasks:
     - name: Copy Server Setup Files
-      copy: src="setup/guacamole/guacamole-server-{{ ps_guac_server }}.tar.gz" dest=/tmp/
+      copy: src="guacamole/guacamole-server-{{ ps_guac_server }}.tar.gz" dest=/tmp/
       tags: file
 
     - name: Extract the server source
@@ -58,7 +58,7 @@
         command: update-rc.d guacd defaults
 
     - name: Copy over client
-      copy: src="setup/guacamole/guacamole-{{ ps_guac_client }}.war" dest=/var/lib/{{ ps_tomcat }}/webapps/guacamole.war
+      copy: src="guacamole/guacamole-{{ ps_guac_client }}.war" dest=/var/lib/{{ ps_tomcat }}/webapps/guacamole.war
       tags: file
 
     - name: Make home directory
@@ -74,11 +74,11 @@
         follow: true
 
     - name: Add properties
-      template: src="configs/guacamole.properties.j2" dest="{{ ps_guac_home }}/guacamole.properties"
+      template: src="../configs/guacamole.properties.j2" dest="{{ ps_guac_home }}/guacamole.properties"
       tags: template
 
     - name: Add user maps
-      copy: src="configs/user-mapping.xml.j2" dest="{{ ps_guac_home }}/user-mapping.xml"
+      copy: src="../configs/user-mapping.xml.j2" dest="{{ ps_guac_home }}/user-mapping.xml"
       tags: template
 
     - name: Cleanup temp
